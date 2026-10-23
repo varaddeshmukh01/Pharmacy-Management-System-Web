@@ -247,8 +247,3 @@ The initial seed provides default accounts for system access:
   - Change `PORT=3000` in [`web-app/.env`](web-app/.env) to another port (e.g., `PORT=3001`).
 
 ---
-
-## 📜 License & Attribution
-
-- Converted from the original project by [syedibrahim/Pharmacy-Management-System](https://github.com/syedibrahim/Pharmacy-Management-System).
-- Educational and open-source pharmacy management project under the Contributor Covenant Code of Conduct.
