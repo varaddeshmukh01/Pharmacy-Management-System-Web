@@ -21,7 +21,6 @@ It lets pharmacy staff manage medicines and stock, suppliers, purchases, sales b
 - [REST API Reference](#-rest-api-reference)
 - [My Contributions](#-my-contributions)
 - [Troubleshooting](#-troubleshooting)
-- [License](#-license)
 
 ---
 
