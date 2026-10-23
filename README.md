@@ -1,7 +1,12 @@
 # Pharmacy Management System
 
-> Modern, responsive, full-stack **Pharmacy Management Web Application** built with **Node.js**, **Express**, and **MySQL**.
-> Converted from the original desktop Java application by [syedibrahim/Pharmacy-Management-System](https://github.com/syedibrahim/Pharmacy-Management-System).
+A full-stack **web application** for managing a pharmacy, built with **Node.js**, **Express** and **MySQL**.
+
+It lets pharmacy staff manage medicines and stock, suppliers, purchases, sales billing and user accounts from the browser. Every action (add, update, delete, search) is stored in a MySQL database (`pharmacy_db`) and can be viewed in MySQL Workbench.
+
+**Main features:** secure login with roles, dashboard with live time and alerts, drug inventory, supplier management, purchases, point-of-sale billing with receipts, expiry and low-stock warnings, internal messaging, and login history.
+
+---
 
 ---
 
