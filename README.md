@@ -1,111 +1,254 @@
-# **Pharmacy-Management-System**
+# Pharmacy Management System
 
-**How to run the Project:**
-1. Clone this repo using 
-   - `git clone https://github.com/syedibrahim/Pharmacy-Management-System.git`
-2. Install Eclipse J2EE or any other IDE of your choice.
-3. Use WAMP or XAMPP or any server of your choice.
-4. First create the MySql database on WAMP server using the sql file in the repo
-5. And then build and run the project from the IDE. 
+> Modern, responsive, full-stack **Pharmacy Management Web Application** built with **Node.js**, **Express**, and **MySQL**.
+> Converted from the original desktop Java application by [syedibrahim/Pharmacy-Management-System](https://github.com/syedibrahim/Pharmacy-Management-System).
 
-**Login Information** <br>
- ```
- id :1
- password: admin 
- ```
- note: The login information can be changed while setting up MySQL or via UI later
- 
-# INTRODUCTION: <br>
-The main aim of the project is the management of the database of the pharmaceutical shop. This project is insight into the design and implementation of a Pharmacy Management System. This is done by creating a database of the available medicines in the shop. The primary aim of pharmacy management system is to improve accuracy and enhance safety and efficiency in the pharmaceutical store. The aim of this project is to develop software for the effective management of a pharmaceutical store. We have developed this software for ensuring effective policing by providing statistics of the drugs in stock. 
+---
 
-**Description on the topic:** <br>
-This program can be used in any pharmaceutical shops having a database to maintain. The software used can generate reports, as per the user’s requirements. The software can print invoices, bills, receipts etc. It can also maintain the record of supplies sent in by the supplier. Here, the admin who are handling the organization will be responsible to manage the record of the employee. Each employee will be given with a separate username and password.
+## 📋 Table of Contents
+- [Quickstart](#-quickstart)
+- [Prerequisites](#-prerequisites)
+- [Project Structure](#-project-structure)
+- [Database Setup (MySQL Workbench)](#-database-setup-mysql-workbench)
+- [Environment Configuration](#-environment-configuration)
+- [Default Login Credentials](#-default-login-credentials)
+- [Key Features & Modules](#-key-features--modules)
+- [REST API Reference](#-rest-api-reference)
+- [My Contributions](#-my-contributions)
+- [Troubleshooting](#-troubleshooting)
+- [License](#-license)
 
-**Problem Definition:**<br>
-The aim of the project is to create an effective software to help the pharmacist to maintain the records of the medicines, handle user details, generate invoice, check and renew validity and provide a scope of communication between users by using inbuilt messaging system. Pharmacy management system deals with the maintenance of drugs and consumables in the pharmacy unit. This pharmacy management system is user friendly.
+---
 
+## ⚡ Quickstart
 
-**Objectives**<br>
--> **Primary objective**<br>
-•To gain practical experience by modeling a software based on real world problem. <br>
-•To understand how to work on Front-end (Java) and Back-end (MySQL) by using server(wamp).
+Get the web application running in three simple steps:
 
--> **Secondary objective** <br>
-•To develop an application that deals with the day to day requirement of any pharmacy.<br>
-•To develop the easy management of the medicines (drugs). <br>
-•To handle the inventory details like sales details, purchase details and stock expiry and quantity.<br>
-•To provide competitive advantage to the pharmacy.<br>
-•To provide details information about the stock on details necessary and help locate it in shop easily. <br>
-•To make the stock manageable and simplify the use of inventory in the pharmacy.<br>
+```bash
+# 1. Navigate to the web application directory
+cd web-app
 
-**Hardware and software tools:**<br>
-The system services and goals are established by consultation with system user. They are then defined in details and serve as a system specification. System requirement are those on which the system runs.<br><br>
+# 2. Install dependencies
+npm install
 
-⚙️	**Hardware Requirements:**<br>
-o	Computer with either Intel Pentium processor or AMD processor.<br>
-o	1GB+ DDR RAM<br>
-o	40GB hard disk drive<br>
+# 3. Start the application
+npm start
+```
 
+Open your browser at:
+👉 **`http://localhost:3000`**
 
-💻	**Software Requirements:**<br>
-o	Windows/ MacOS/ Linux operating system.<br>
-o	JRE and JDK.<br>
-o	MySQL server (WAMP or XAMPP or any)<br>
+Default Administrator Credentials:
+- **User ID / Username:** `1` or `admin`
+- **Password:** `admin`
 
-# Chapter 2 - DESIGN<br>
-Database Design is a collection of processes that facilitate the designing, development, implementation and maintenance of enterprise data management systems.<br>
-It helps produce database systems:<br>
-o	That meet the requirements of the users<br>
-o	Have high performance.<br><br>
+---
 
-**Architecture Description** <br>
-The design of a DBMS depends on its architecture. It can be centralized or decentralized or hierarchical. The architecture of a DBMS can be seen as either single tier or multi-tier.<br><br>
-**ER Diagram**
+## ⚙️ Prerequisites
 
-![image.png](diagram/ER_diagram.png)
- 
-Fig 1: ER Diagram
+1. **Node.js**:
+   - Version 16.0.0 or higher (tested on Node v20.x).
+   - Check version:
+     ```bash
+     node -v
+     npm -v
+     ```
+2. **MySQL Server & MySQL Workbench**:
+   - MySQL 5.7+ or 8.0+ running on port `3306`.
+   - MySQL Workbench (or CLI / any MySQL client).
 
-An entity–relationship model describes interrelated things of interest in a specific domain of knowledge (Refer Fig 1). It is composed of entity types and specifies relationships that can exist between instances of those entity types.
- 
-**Relational Schema Diagram**
+---
 
-![image_1.png](diagram/RelationalSchema.png)
+## 📂 Project Structure
 
- Fig 2: Relational Schema <br><br>
-Relational schema is a collection of meta-data. Database schema describes the structure and constraints of data representing in a particular domain (Refer Fig 2).
+```text
+Pharmacy-Management-System/
+├── .github/                       # GitHub workflow and issue templates
+│   ├── ISSUE_TEMPLATE/
+│   │   ├── bug_report.md
+│   │   └── custom.md
+│   └── workflows/
+│       └── stale.yml
+├── database/                      # MySQL database schema and migrations
+│   └── schema.sql                 # Complete database schema with tables and initial seed data
+├── diagram/                       # Database design documentation
+│   ├── ER_diagram.png             # Entity-Relationship diagram
+│   └── RelationalSchema.png       # Relational schema architecture
+├── web-app/                       # Full-Stack Web Application (Node.js + Express)
+│   ├── public/                    # Frontend static assets
+│   │   ├── assets/                # Logos, icons, and medicine imagery
+│   │   ├── css/
+│   │   │   └── style.css          # Healthcare UI design system & responsive styling
+│   │   ├── js/
+│   │   │   └── app.js             # Client-side SPA routing, API fetchers, and dynamic UI
+│   │   └── index.html             # Single-Page Application interface
+│   ├── src/                       # Backend Express source code
+│   │   ├── middleware/
+│   │   │   └── auth.js            # JWT token authentication and role checking
+│   │   ├── routes/                # REST API endpoints
+│   │   │   ├── audit.js           # Login audit logs
+│   │   │   ├── auth.js            # Authentication and password changes
+│   │   │   ├── companies.js       # Pharmaceutical supplier management
+│   │   │   ├── drugs.js           # Inventory CRUD, pricing, validity, alerts
+│   │   │   ├── messages.js        # Internal messaging and inbox
+│   │   │   ├── purchases.js       # Procurement orders and supplier deals
+│   │   │   ├── sales.js           # POS billing, cart, and historical sales
+│   │   │   ├── stats.js           # Dashboard metrics and stock counters
+│   │   │   └── users.js           # Staff account administration
+│   │   ├── db.js                  # MySQL2 connection pool & auto-migration
+│   │   └── server.js              # Express application bootstrap
+│   ├── test/                      # Test suite
+│   │   └── api-test.js            # Automated API integration tests
+│   ├── .env                       # Local environment variables (git-ignored)
+│   ├── .env.example               # Environment variables template
+│   ├── package.json               # Node.js dependencies and scripts
+│   └── README.md                  # Web application reference guide
+├── .env.example                   # Root environment configuration template
+├── .gitignore                     # Git ignore rules
+├── CODE_OF_CONDUCT.md             # Contributor Covenant Code of Conduct
+└── README.md                      # Project documentation
+```
 
-# Chapter 3 - IMPLEMENTATION <br>
-**Description on Implementation**<br>
-The goal of this application is to manage the medicines and various function of the pharmacy. <br><br>
-**List of modules:**<br>
-o	Login page<br>
-o	Home page<br>
-o	Company<br>
-o	Purchase<br>
-o	Drugs<br>
-o	Sales<br>
-o	User/Settings<br>
-o	Messaging<br>
+---
 
+## 🗄️ Database Setup (MySQL Workbench)
 
-# Chapter 4 - Result and Discussion<br>
-By using MySQL commands and its database this website Pharmacy management tends to store all the data received from the users including drugs sales details and the profit made by the owners are all in this data base. This website allows the user to generate invoices for sales, check expiry and quantity remaining of the drugs. It also provides user with options to renew validity and add more drugs into the store and update the database accordingly. By using xampp server these database commands are easily initiated into the database and the ER diagram with relational schema diagrams helps us to make the structure of the database faster and it was easier to make them understand the needs of the website.<br>
+The web application automatically initializes the database schema and default tables on startup if they do not exist. Alternatively, you can run the SQL script manually in MySQL Workbench:
 
-**Login Information** <br>
- ```
- id :1
- password: admin 
- ```
- <br>
+1. Open **MySQL Workbench** and connect to your MySQL Server instance (`127.0.0.1:3306`).
+2. Open [`database/schema.sql`](database/schema.sql) (**File** ➔ **Open SQL Script...**).
+3. Execute the script by clicking the lightning bolt icon or pressing `Ctrl + Shift + Enter`.
+4. Refresh the **Schemas** panel on the left to view the **`pharmacy_db`** schema:
+   - `company`: Pharmaceutical manufacturers/suppliers
+   - `drugs`: Drug inventory (barcode, name, dose, pricing, expiry, company)
+   - `purchase`: Procurement orders and supplier deals
+   - `sales`: Active POS checkout cart
+   - `history_sales`: Persistent historical sales records with cashier username and timestamp
+   - `users`: User and employee accounts with bcrypt password hashes
+   - `login`: User login session audit trail
+   - `inbox`: Internal staff messaging inbox
+   - `message_history`: Internal sent messages tracking
 
-# CONCLUSIONS AND FUTURE SCOPE
-o	Detailed information gathering has to be done. Without that the purpose for using the software won’t be satisfied properly.<br>
-o	However, it can give good profits in the long run.<br>
-o	Implementing the software requires change in the business practices.<br>
-o	Efficient organization of all knowledge is the analysis company and easy analysis access and retrieval of information is possible.<br>
-o	In this project we can also include BAR CODE facility using the bar code reader, which will detect the expiry date and the other information about the related medicines.<br>
-o	Company using this software will always be able to plan in future and always be aware of their financial position in the market. <br>
-o	It leads to ease in functioning of business processes.<br>
-o	The project can be made more robust by including biometric verification.<br>
-o	There is also a scope to expand by implementing newer technologies like cloud etcetera. <br>
+---
+
+## 🔑 Environment Configuration
+
+Database connection settings are configured in [`web-app/.env`](web-app/.env) (refer to [`web-app/.env.example`](web-app/.env.example)):
+
+```ini
+# MySQL Database Configuration
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=your_actual_password
+DB_NAME=pharmacy_db
+
+# Web Server Port
+PORT=3000
+
+# JWT Secret for Session Authentication
+JWT_SECRET=pharmacy_mgmt_jwt_secret_key_2026
+```
+
+---
+
+## 🔐 Default Login Credentials
+
+The initial seed provides default accounts for system access:
+
+| User ID / Username | Password | Role | Permissions |
+| :--- | :--- | :--- | :--- |
+| **`1`** or **`admin`** | **`admin`** | **Admin** | Full system access (Billing, Inventory, Pricing, Suppliers, Staff Accounts) |
+| **`2`** or **`mark`** | **`mark123`** | **Employee** | POS Billing, Inventory Search, Drug details |
+| **`3`** or **`clark`** | **`clark123`** | **Employee** | POS Billing, Inventory Search, Drug details |
+
+*(New staff accounts and passwords can be added or updated via the User module).*
+
+---
+
+## 🧩 Key Features & Modules
+
+- **Dashboard**: Live clock and date, real-time metrics, active session indicators, and expiry/stock alert badges.
+- **Company Management**: Complete CRUD operations for pharmaceutical suppliers with search and telephone directory.
+- **Drug Inventory**: Full medicine lifecycle management with barcode lookup, batch codes, dosages, costs, shelf locations, and retail prices.
+- **Drug Sub-tools**: Dynamic search, price editing, validity renewal, shelf relocation, expired drug warnings (&le; 30 days), and low-stock warnings (&le; 10 units).
+- **Purchases & Procurement**: Track supplier purchase deals, order volumes, costs, and expenditure totals.
+- **Point of Sale (POS) & Billing**: Real-time cart management, stock validation, atomic transactions, receipt generation, customer returns/restocking, and shift sales revenue reports.
+- **User Administration**: Staff profile creation, role assignment, and secure password updates with `bcrypt`.
+- **Session & Audit Logs**: Historical records of all staff logins with timestamps and user identifiers.
+- **Internal Messaging**: Inter-staff messaging system between pharmacists and administration.
+
+---
+
+## 📡 REST API Reference
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/auth/login` | Authenticate user, issue JWT token |
+| `GET` | `/api/auth/me` | Fetch authenticated user profile |
+| `POST` | `/api/auth/change-password` | Update current user password |
+| `GET` | `/api/companies` | List all suppliers (with search) |
+| `POST` | `/api/companies` | Add new supplier |
+| `PUT` | `/api/companies/:name` | Update supplier details |
+| `DELETE` | `/api/companies/:name` | Delete supplier |
+| `GET` | `/api/drugs` | List all medicines |
+| `GET` | `/api/drugs/search` | Search medicines by query, company, type |
+| `POST` | `/api/drugs` | Add medicine to inventory |
+| `PUT` | `/api/drugs/:barcode` | Update medicine details |
+| `PUT` | `/api/drugs/:barcode/price` | Modify cost & selling prices |
+| `PUT` | `/api/drugs/:barcode/validity` | Update expiry and production dates |
+| `PUT` | `/api/drugs/:barcode/move` | Update storage rack/shelf position |
+| `DELETE` | `/api/drugs/:barcode` | Delete medicine record |
+| `GET` | `/api/drugs/alerts/expired` | Filter medicines expiring within 30 days |
+| `GET` | `/api/drugs/alerts/almost-finish` | Filter low-stock medicines (&le; 10 units) |
+| `GET` | `/api/purchases` | List procurement deals |
+| `POST` | `/api/purchases` | Create procurement order |
+| `PUT` | `/api/purchases/:barcode` | Update procurement order |
+| `DELETE` | `/api/purchases/:barcode` | Delete procurement order |
+| `GET` | `/api/sales/cart` | View current POS checkout cart |
+| `POST` | `/api/sales/cart` | Add medicine to POS cart |
+| `DELETE` | `/api/sales/cart/:id` | Remove item from POS cart |
+| `DELETE` | `/api/sales/cart` | Clear POS cart |
+| `POST` | `/api/sales/checkout` | Finalize POS sale, decrement stock, record transaction |
+| `GET` | `/api/sales/history` | Query shift sales ledger by date |
+| `POST` | `/api/sales/return` | Customer return & restock inventory |
+| `GET` | `/api/users` | List staff accounts (Admin) |
+| `POST` | `/api/users` | Create staff account (Admin) |
+| `PUT` | `/api/users/:id` | Update staff account |
+| `DELETE` | `/api/users/:id` | Delete staff account (Admin) |
+| `GET` | `/api/messages/inbox` | List received messages |
+| `POST` | `/api/messages/send` | Send internal message |
+| `DELETE` | `/api/messages/inbox/:id` | Delete message |
+| `GET` | `/api/audit/logins` | View user login history |
+| `GET` | `/api/stats/summary` | Dashboard summary indicators |
+
+---
+
+## 🌟 My Contributions
+
+- **Architecture Migration**: Transformed the legacy desktop Java Swing application into an enterprise-ready, cross-platform full-stack web application powered by Node.js, Express, and MySQL.
+- **Modern Responsive Web Interface**: Designed and built an intuitive Single Page Application (SPA) frontend utilizing clean Vanilla CSS, dynamic layouts, healthcare color scheme, and fluid micro-animations.
+- **RESTful API Backend**: Implemented modular, scalable Express route handlers and middleware adhering to RESTful standards.
+- **Security & Session Authentication**: Replaced plaintext desktop authentication with industry-standard JSON Web Tokens (JWT) and `bcrypt` password hashing (salt rounds: 10).
+- **Real-Time POS Billing & Inventory Sync**: Engineered an atomic point-of-sale checkout system that automatically validates stock availability, decrements inventory, generates printable receipts, and records shift ledgers.
+- **Database Architecture Modernization**: Designed normalized SQL schema with InnoDB foreign key constraints, cascading updates/deletes, auto-increment identifiers, and `utf8mb4` Unicode support.
+- **Automated Verification Suite**: Authored comprehensive integration tests (`web-app/test/api-test.js`) validating authentication, CRUD operations, database constraints, and POS workflows.
+- **Repository Optimization**: Removed legacy Java bytecode (`.class`), obsolete IDE metadata (NetBeans/Eclipse), and legacy build scripts, producing a streamlined, maintainable codebase.
+
+---
+
+## 🛠️ Troubleshooting
+
+- **Database Connection Refused / Access Denied**:
+  - Verify that MySQL Server service is running on your machine.
+  - Check your credentials in [`web-app/.env`](web-app/.env). Ensure `DB_USER` and `DB_PASSWORD` match your MySQL setup.
+  - Test connecting to MySQL Workbench with the same credentials.
+- **Port 3000 Already in Use**:
+  - Change `PORT=3000` in [`web-app/.env`](web-app/.env) to another port (e.g., `PORT=3001`).
+
+---
+
+## 📜 License & Attribution
+
+- Converted from the original project by [syedibrahim/Pharmacy-Management-System](https://github.com/syedibrahim/Pharmacy-Management-System).
+- Educational and open-source pharmacy management project under the Contributor Covenant Code of Conduct.

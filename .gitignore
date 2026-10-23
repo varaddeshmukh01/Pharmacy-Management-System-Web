@@ -1,0 +1,20 @@
+# Environment variables
+.env
+*.env
+web-app/.env
+config.properties
+
+# Dependencies
+node_modules/
+web-app/node_modules/
+
+# Build artifacts
+build/
+dist/
+target/
+*.class
+*.log
+
+# System files
+.DS_Store
+Thumbs.db

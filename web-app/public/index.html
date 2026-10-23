@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pharmacy Management System (Administration)</title>
+  <link rel="icon" type="image/png" href="assets/Untitled.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- =======================================================================
+       Main Header
+       ======================================================================= -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-section">
+        <img src="assets/Untitled.png" alt="Pharmacy Logo" class="brand-logo" onerror="this.src='assets/login.png'">
+        <div class="brand-title">
+          <h1>Pharmacy Management</h1>
+          <div class="brand-subtitle">(Administration)</div>
+        </div>
+      </div>
+
+      <!-- Live Clock & Date -->
+      <div class="clock-info-section">
+        <div class="live-time-box">
+          <span class="meta-label">Time</span>
+          <span class="meta-value" id="live-clock">00:00:00</span>
+        </div>
+        <div style="width: 1px; height: 24px; background: rgba(255,255,255,0.2);"></div>
+        <div class="live-date-box">
+          <span class="meta-label">Today</span>
+          <span class="meta-value" id="live-date">--/--/----</span>
+        </div>
+      </div>
+
+      <!-- User Information & Actions -->
+      <div class="user-status-section">
+        <div class="user-badge">
+          <span class="user-role-tag" id="user-role-badge">Login As: Admin</span>
+          <span class="user-fullname" id="user-display-name">admin</span>
+        </div>
+        <button id="btn-inbox-header" class="header-action-btn" title="Public Inbox">
+          <img src="assets/2572420.postal.envelope.icon.dark.blue.isolated.on.black.background (1).jpg" alt="Inbox" style="width:20px;height:20px;border-radius:50%;" onerror="this.outerHTML='✉️'">
+          <span class="badge-count" id="inbox-badge-count">0</span>
+        </button>
+        <button id="btn-logout" class="header-action-btn logout" title="Logout">
+          <img src="assets/Apps-session-logout-icon.png" alt="Logout" style="width:20px;height:20px;" onerror="this.outerHTML='⏻'">
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =======================================================================
+       Top Navigation Menu
+       ======================================================================= -->
+  <nav class="top-nav-bar">
+    <div class="nav-container">
+      <ul class="nav-links">
+        <li class="nav-item active" data-view="dashboard">🏠 Dashboard</li>
+        <li class="nav-item" data-view="companies">🏢 Company</li>
+        <li class="nav-item" data-view="drugs">💊 Drugs</li>
+        <li class="nav-item" data-view="drug-details">🔍 Drug Details</li>
+        <li class="nav-item" data-view="purchases">📦 Purchases</li>
+        <li class="nav-item" data-view="sales">🧾 Sales</li>
+        <li class="nav-item" data-view="users">👥 User</li>
+        <li class="nav-item" data-view="settings">⚙️ Setting</li>
+      </ul>
+      <div class="nav-aux-links">
+        <button class="btn-aux" id="btn-modal-about-pharmacy">About Pharmacy</button>
+        <button class="btn-aux" id="btn-modal-about-dev">About Developer</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- =======================================================================
+       Main Container
+       ======================================================================= -->
+  <main class="main-wrapper">
+
+    <!-- 1. DASHBOARD VIEW -->
+    <section id="view-dashboard" class="view-section active">
+      <div class="dashboard-hero">
+        <div class="hero-welcome">
+          <h2>Welcome to Pharmacy Administration</h2>
+          <p>Real-time Inventory, Automated Billing, and Direct MySQL Workbench Synchronization</p>
+        </div>
+      </div>
+
+      <!-- Quick Metrics -->
+      <div class="stats-grid">
+        <div class="stat-card" data-view="drugs">
+          <div class="stat-icon teal">💊</div>
+          <div class="stat-info">
+            <h3 id="stat-total-drugs">--</h3>
+            <span>Total Medicines in Stock</span>
+          </div>
+        </div>
+        <div class="stat-card" id="card-alert-expired">
+          <div class="stat-icon danger">⚠️</div>
+          <div class="stat-info">
+            <h3 id="stat-expired-drugs">--</h3>
+            <span>Expired / Expiring Soon</span>
+          </div>
+        </div>
+        <div class="stat-card" id="card-alert-almost">
+          <div class="stat-icon warning">📉</div>
+          <div class="stat-info">
+            <h3 id="stat-low-stock">--</h3>
+            <span>Almost Finished (Qty &le; 10)</span>
+          </div>
+        </div>
+        <div class="stat-card" data-view="sales">
+          <div class="stat-icon success">💰</div>
+          <div class="stat-info">
+            <h3 id="stat-today-sales">$0.00</h3>
+            <span>Today's Shift Revenue</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Module Navigation Cards (Matching Desktop Tiles) -->
+      <h3 style="margin-bottom: 16px; font-weight: 700; color: var(--dark-slate);">Core Operational Modules</h3>
+      <div class="modules-grid">
+        <div class="module-card" data-view="drugs">
+          <div class="module-header">
+            <div class="icon">💊</div>
+            <div>
+              <h3>Drugs</h3>
+              <small style="color:var(--text-muted)">Inventory Directory</small>
+            </div>
+          </div>
+          <p class="module-desc">Add new medicines, register barcodes, update specifications, and inspect current stock.</p>
+          <button class="module-btn">Open Drugs ➔</button>
+        </div>
+
+        <div class="module-card" data-view="drug-details">
+          <div class="module-header">
+            <div class="icon">🔬</div>
+            <div>
+              <h3>Drug Details</h3>
+              <small style="color:var(--text-muted)">Pricing, Validity & Shelf</small>
+            </div>
+          </div>
+          <p class="module-desc">Search drug records, edit retail/cost prices, renew expiration dates, and move shelf positions.</p>
+          <button class="module-btn">Inspect Details ➔</button>
+        </div>
+
+        <div class="module-card" data-view="sales">
+          <div class="module-header">
+            <div class="icon">🧾</div>
+            <div>
+              <h3>Sales</h3>
+              <small style="color:var(--text-muted)">POS Billing & Shift Log</small>
+            </div>
+          </div>
+          <p class="module-desc">Interactive point-of-sale checkout, live cart management, stock auto-decrement, and invoice printing.</p>
+          <button class="module-btn">Launch POS ➔</button>
+        </div>
+
+        <div class="module-card" data-view="purchases">
+          <div class="module-header">
+            <div class="icon">📦</div>
+            <div>
+              <h3>Purchases</h3>
+              <small style="color:var(--text-muted)">Supplier Deals & Orders</small>
+            </div>
+          </div>
+          <p class="module-desc">Track purchase orders from manufacturers, supplier rates, order quantities, and expenses.</p>
+          <button class="module-btn">Manage Purchases ➔</button>
+        </div>
+
+        <div class="module-card" data-view="companies">
+          <div class="module-header">
+            <div class="icon">🏢</div>
+            <div>
+              <h3>Company</h3>
+              <small style="color:var(--text-muted)">Supplier Directory</small>
+            </div>
+          </div>
+          <p class="module-desc">Manage pharmaceutical manufacturers, contact numbers, official office addresses, and deals.</p>
+          <button class="module-btn">View Companies ➔</button>
+        </div>
+
+        <div class="module-card" data-view="users">
+          <div class="module-header">
+            <div class="icon">👥</div>
+            <div>
+              <h3>User</h3>
+              <small style="color:var(--text-muted)">Employee Administration</small>
+            </div>
+          </div>
+          <p class="module-desc">Create employee accounts, manage salaries, phone records, and system access credentials.</p>
+          <button class="module-btn">Manage Users ➔</button>
+        </div>
+
+        <div class="module-card" data-view="settings">
+          <div class="module-header">
+            <div class="icon">⚙️</div>
+            <div>
+              <h3>Setting</h3>
+              <small style="color:var(--text-muted)">Security & System Audit</small>
+            </div>
+          </div>
+          <p class="module-desc">Change password, review login audit trail history, and test live MySQL connection health.</p>
+          <button class="module-btn">View Settings ➔</button>
+        </div>
+      </div>
+
+      <!-- Quick Action Strip -->
+      <div class="quick-action-strip">
+        <div class="quick-title">⚡ Quick Actions & Alerts:</div>
+        <div class="quick-buttons">
+          <button class="btn btn-secondary btn-sm" id="btn-quick-drug-list">Drugs_List</button>
+          <button class="btn btn-secondary btn-sm" id="btn-quick-move-drug">Move Drug</button>
+          <button class="btn btn-secondary btn-sm" id="btn-quick-return-drug">Retrieval Drug</button>
+          <button class="btn btn-danger btn-sm" id="btn-quick-expired">⚠️ Expired Drugs (<span id="quick-expired-count">0</span>)</button>
+          <button class="btn btn-secondary btn-sm" id="btn-quick-almost" style="color:var(--warning-amber);border-color:var(--warning-amber);">📉 Almost_Finished (<span id="quick-almost-count">0</span>)</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. COMPANIES VIEW -->
+    <section id="view-companies" class="view-section">
+      <div class="card-box">
+        <div class="card-header-bar">
+          <div class="card-title">
+            <h2>Pharmaceutical Companies & Suppliers</h2>
+            <p>Maintain registered suppliers and manufacturer contact profiles</p>
+          </div>
+          <div class="table-toolbar">
+            <div class="search-input-wrapper">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="companies-search-input" placeholder="Search by name, address, phone...">
+            </div>
+            <button class="btn btn-primary" id="btn-add-company">+ New Company</button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table" id="companies-table">
+            <thead>
+              <tr>
+                <th>Company Name</th>
+                <th>Address</th>
+                <th>Phone Number</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Dynamic rows -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. DRUGS INVENTORY VIEW -->
+    <section id="view-drugs" class="view-section">
+      <div class="card-box">
+        <div class="card-header-bar">
+          <div class="card-title">
+            <h2>Drug Inventory Directory</h2>
+            <p>Add, update, search, and manage medicine specifications</p>
+          </div>
+          <div class="table-toolbar">
+            <div class="search-input-wrapper">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="drugs-search-input" placeholder="Search name, barcode, shelf...">
+            </div>
+            <select class="form-control" id="drugs-filter-type" style="width: auto;">
+              <option value="">All Types</option>
+              <option value="Bills">Bills / Tablets</option>
+              <option value="Capsule">Capsule</option>
+              <option value="Syrup">Syrup</option>
+              <option value="Injection">Injection</option>
+              <option value="Drops">Drops</option>
+            </select>
+            <select class="form-control" id="drugs-filter-company" style="width: auto;">
+              <option value="">All Companies</option>
+            </select>
+            <button class="btn btn-primary" id="btn-add-drug">+ Add New Drug</button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table" id="drugs-table">
+            <thead>
+              <tr>
+                <th>Barcode</th>
+                <th>Drug Name</th>
+                <th>Type</th>
+                <th>Dose</th>
+                <th>Cost</th>
+                <th>Price</th>
+                <th>Company</th>
+                <th>Expiry Date</th>
+                <th>Shelf Place</th>
+                <th>Stock Qty</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Dynamic rows -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. DRUG DETAILS VIEW -->
+    <section id="view-drug-details" class="view-section">
+      <div class="card-box">
+        <div class="tabs-bar">
+          <button class="tab-btn active" data-tab="tab-search-drug">🔍 Search Drug</button>
+          <button class="tab-btn" data-tab="tab-edit-price">💲 Edit Price</button>
+          <button class="tab-btn" data-tab="tab-renew-validity">📅 Renew Validity</button>
+          <button class="tab-btn" data-tab="tab-move-drug">📍 Move Drug</button>
+          <button class="tab-btn" data-tab="tab-expired-drugs">⚠️ Expired Drugs</button>
+          <button class="tab-btn" data-tab="tab-almost-finish">📉 Almost Finished</button>
+        </div>
+
+        <!-- Sub-Tab 1: Search Drug -->
+        <div id="tab-search-drug" class="tab-content active">
+          <div style="display: flex; gap: 12px; margin-bottom: 20px;">
+            <input type="text" id="inspect-barcode-input" class="form-control" style="max-width: 380px;" placeholder="Enter Drug Barcode or Name...">
+            <button class="btn btn-primary" id="btn-inspect-lookup">Search Drug</button>
+          </div>
+          <div id="inspect-result-card" style="display: none; background: var(--mint-light); padding: 20px; border-radius: var(--radius-md);">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Sub-Tab 2: Edit Price -->
+        <div id="tab-edit-price" class="tab-content" style="display: none;">
+          <h3 style="margin-bottom: 14px;">Update Medicine Pricing</h3>
+          <form id="form-edit-price" style="max-width: 480px;">
+            <div class="form-group">
+              <label>Select Drug</label>
+              <select id="editprice-drug-select" class="form-control" required></select>
+            </div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Cost Price ($)</label>
+                <input type="number" step="0.01" id="editprice-cost" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label>Selling Price ($)</label>
+                <input type="number" step="0.01" id="editprice-selling" class="form-control" required>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Updated Prices</button>
+          </form>
+        </div>
+
+        <!-- Sub-Tab 3: Renew Validity -->
+        <div id="tab-renew-validity" class="tab-content" style="display: none;">
+          <h3 style="margin-bottom: 14px;">Renew Drug Validity & Expiration</h3>
+          <form id="form-renew-validity" style="max-width: 480px;">
+            <div class="form-group">
+              <label>Select Drug</label>
+              <select id="renew-drug-select" class="form-control" required></select>
+            </div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Production Date</label>
+                <input type="date" id="renew-prod-date" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label>Expiration Date</label>
+                <input type="date" id="renew-exp-date" class="form-control" required>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Renew Validity</button>
+          </form>
+        </div>
+
+        <!-- Sub-Tab 4: Move Drug -->
+        <div id="tab-move-drug" class="tab-content" style="display: none;">
+          <h3 style="margin-bottom: 14px;">Move Drug Storage Location</h3>
+          <form id="form-move-drug" style="max-width: 480px;">
+            <div class="form-group">
+              <label>Select Drug</label>
+              <select id="move-drug-select" class="form-control" required></select>
+            </div>
+            <div class="form-group">
+              <label>New Storage Place / Shelf (e.g. N-Right, B-Left)</label>
+              <input type="text" id="move-new-place" class="form-control" placeholder="Shelf / Rack code" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Update Shelf Position</button>
+          </form>
+        </div>
+
+        <!-- Sub-Tab 5: Expired Drugs -->
+        <div id="tab-expired-drugs" class="tab-content" style="display: none;">
+          <h3 style="margin-bottom: 14px; color: var(--coral-dark);">⚠️ Expired Medicines or Expiring within 30 Days</h3>
+          <div class="table-responsive">
+            <table class="data-table" id="expired-drugs-table">
+              <thead>
+                <tr>
+                  <th>Barcode</th>
+                  <th>Drug Name</th>
+                  <th>Company</th>
+                  <th>Expiration Date</th>
+                  <th>Status / Days Left</th>
+                  <th>Stock Qty</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Sub-Tab 6: Almost Finished -->
+        <div id="tab-almost-finish" class="tab-content" style="display: none;">
+          <h3 style="margin-bottom: 14px; color: var(--warning-amber);">📉 Medicines Low on Stock (Quantity &le; 10)</h3>
+          <div class="table-responsive">
+            <table class="data-table" id="almost-finish-table">
+              <thead>
+                <tr>
+                  <th>Barcode</th>
+                  <th>Drug Name</th>
+                  <th>Company</th>
+                  <th>Remaining Qty</th>
+                  <th>Shelf Place</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 5. PURCHASES VIEW -->
+    <section id="view-purchases" class="view-section">
+      <div class="card-box">
+        <div class="card-header-bar">
+          <div class="card-title">
+            <h2>Supplier Purchase Deals</h2>
+            <p>Procurement orders and spending records</p>
+          </div>
+          <div class="table-toolbar">
+            <div class="search-input-wrapper">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="purchases-search-input" placeholder="Search barcode, drug, company...">
+            </div>
+            <button class="btn btn-primary" id="btn-add-purchase">+ Make New Deal</button>
+          </div>
+        </div>
+
+        <div style="background: var(--mint-light); padding: 14px 20px; border-radius: var(--radius-sm); margin-bottom: 18px; display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-weight: 600; color: var(--primary-teal-dark);">Total Procurement Spending:</span>
+          <span style="font-size: 1.4rem; font-weight: 700; color: var(--primary-teal-dark);" id="purchase-total-spending">$0.00</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table" id="purchases-table">
+            <thead>
+              <tr>
+                <th>Deal Barcode</th>
+                <th>Drug Name</th>
+                <th>Type</th>
+                <th>Supplier Company</th>
+                <th>Order Qty</th>
+                <th>Unit Price</th>
+                <th>Total Amount</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Dynamic rows -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. SALES / POS VIEW -->
+    <section id="view-sales" class="view-section">
+      <div class="card-box">
+        <div class="tabs-bar">
+          <button class="tab-btn active" data-tab="tab-pos-billing">🧾 POS Billing & Cart</button>
+          <button class="tab-btn" data-tab="tab-shift-sales">📊 Shift Sales History</button>
+          <button class="tab-btn" data-tab="tab-retrieval-drug">🔄 Drug Retrieval / Return</button>
+        </div>
+
+        <!-- POS Billing Cart -->
+        <div id="tab-pos-billing" class="tab-content active">
+          <div class="pos-layout">
+            <div>
+              <!-- Add Item Form -->
+              <div style="background: var(--mint-light); padding: 16px; border-radius: var(--radius-md); margin-bottom: 18px;">
+                <h4 style="margin-bottom: 10px; color: var(--primary-teal-dark);">Add Drug to Active Cart</h4>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                  <select id="pos-drug-select" class="form-control" style="flex: 2; min-width: 200px;">
+                    <option value="">-- Choose Drug --</option>
+                  </select>
+                  <input type="number" id="pos-qty-input" class="form-control" value="1" min="1" style="flex: 1; min-width: 90px;" placeholder="Qty">
+                  <button class="btn btn-primary" id="btn-pos-add-cart">Add to Cart</button>
+                </div>
+              </div>
+
+              <!-- Cart Table -->
+              <div class="table-responsive">
+                <table class="data-table" id="pos-cart-table">
+                  <thead>
+                    <tr>
+                      <th>Barcode</th>
+                      <th>Drug</th>
+                      <th>Type</th>
+                      <th>Dose</th>
+                      <th>Qty</th>
+                      <th>Price</th>
+                      <th>Amount</th>
+                      <th style="text-align: right;">Remove</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Cart Summary Panel -->
+            <div class="pos-cart-panel">
+              <div>
+                <h3 style="color: var(--dark-slate); margin-bottom: 12px;">Active Bill Summary</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Cashier: <strong id="pos-cashier-name" style="color:var(--primary-teal);">admin</strong></p>
+                <div class="bill-summary-box">
+                  <div class="summary-row">
+                    <span>Items Count:</span>
+                    <strong id="pos-item-count">0</strong>
+                  </div>
+                  <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <strong id="pos-subtotal">$0.00</strong>
+                  </div>
+                  <div class="summary-row grand-total">
+                    <span>Total Due:</span>
+                    <span id="pos-grand-total">$0.00</span>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-top: 24px; display: flex; flex-direction: column; gap: 10px;">
+                <button class="btn btn-primary" id="btn-pos-checkout" style="justify-content: center; padding: 12px; font-size: 1rem;">
+                  ✅ Complete Sale & Print Bill
+                </button>
+                <button class="btn btn-danger btn-sm" id="btn-pos-clear-cart" style="justify-content: center;">
+                  Clear Cart
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shift Sales History -->
+        <div id="tab-shift-sales" class="tab-content" style="display: none;">
+          <div style="display: flex; gap: 14px; align-items: center; margin-bottom: 18px; flex-wrap: wrap;">
+            <input type="text" id="sales-history-date-filter" class="form-control" style="width: 200px;" placeholder="DD-MM-YYYY (e.g. today)">
+            <button class="btn btn-secondary btn-sm" id="btn-sales-filter-today">Filter Today</button>
+            <button class="btn btn-secondary btn-sm" id="btn-sales-filter-all">View All</button>
+            <div style="margin-left: auto; font-weight: 700; color: var(--primary-teal);">
+              Total Shift Revenue: <span id="shift-total-revenue">$0.00</span>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table" id="sales-history-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Cashier</th>
+                  <th>Barcode</th>
+                  <th>Drug Name</th>
+                  <th>Type</th>
+                  <th>Qty</th>
+                  <th>Price</th>
+                  <th>Total</th>
+                  <th>Date</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Retrieval Drug / Return -->
+        <div id="tab-retrieval-drug" class="tab-content" style="display: none;">
+          <h3 style="margin-bottom: 12px;">Customer Drug Return & Stock Restocking</h3>
+          <p style="color: var(--text-secondary); margin-bottom: 18px;">Return customer medicines into active inventory stock</p>
+          <form id="form-retrieval-drug" style="max-width: 480px;">
+            <div class="form-group">
+              <label>Select Drug</label>
+              <select id="retrieval-drug-select" class="form-control" required></select>
+            </div>
+            <div class="form-group">
+              <label>Return Quantity</label>
+              <input type="number" id="retrieval-qty-input" class="form-control" value="1" min="1" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Process Return & Restock</button>
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 7. USER ADMINISTRATION VIEW -->
+    <section id="view-users" class="view-section">
+      <div class="card-box">
+        <div class="card-header-bar">
+          <div class="card-title">
+            <h2>Pharmacy Staff & User Directory</h2>
+            <p>Admin and employee account management</p>
+          </div>
+          <div class="table-toolbar">
+            <button class="btn btn-primary" id="btn-add-user">+ Add New User</button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table" id="users-table">
+            <thead>
+              <tr>
+                <th>User ID</th>
+                <th>Full Name</th>
+                <th>Role</th>
+                <th>Date of Birth</th>
+                <th>Address</th>
+                <th>Phone Number</th>
+                <th>Salary</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. SETTINGS VIEW -->
+    <section id="view-settings" class="view-section">
+      <div class="card-box">
+        <div class="tabs-bar">
+          <button class="tab-btn active" data-tab="tab-settings-pass">🔑 Change Password</button>
+          <button class="tab-btn" data-tab="tab-settings-audit">📜 Login Audit History</button>
+          <button class="tab-btn" data-tab="tab-settings-db">🗄️ Database Health</button>
+        </div>
+
+        <!-- Change Password Tab -->
+        <div id="tab-settings-pass" class="tab-content active">
+          <h3 style="margin-bottom: 14px;">Update Your Account Password</h3>
+          <form id="form-change-password" style="max-width: 440px;">
+            <div class="form-group">
+              <label>Current Password</label>
+              <input type="password" id="input-curr-pass" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>New Password (Min 6 Characters)</label>
+              <input type="password" id="input-new-pass" class="form-control" minlength="6" required>
+            </div>
+            <div class="form-group">
+              <label>Confirm New Password</label>
+              <input type="password" id="input-confirm-pass" class="form-control" minlength="6" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Save New Password</button>
+          </form>
+        </div>
+
+        <!-- Login Audit History Tab -->
+        <div id="tab-settings-audit" class="tab-content" style="display: none;">
+          <h3 style="margin-bottom: 14px;">User Login Session Audit Trail</h3>
+          <div class="table-responsive">
+            <table class="data-table" id="audit-logins-table">
+              <thead>
+                <tr>
+                  <th>Session ID</th>
+                  <th>User Name</th>
+                  <th>Access Type</th>
+                  <th>Date</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Database Health Tab -->
+        <div id="tab-settings-db" class="tab-content" style="display: none;">
+          <h3 style="margin-bottom: 14px;">MySQL Database Connection Status</h3>
+          <div style="background: var(--mint-light); padding: 20px; border-radius: var(--radius-md);">
+            <p><strong>Database Name:</strong> pharmacy_db</p>
+            <p><strong>Host:</strong> 127.0.0.1:3306</p>
+            <p><strong>Workbench Connection:</strong> DBMS</p>
+            <p style="margin-top: 10px; color: var(--emerald-success); font-weight: 700;">
+              ● Real-time Connection Active & Synchronized
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 9. INBOX MODAL / VIEW -->
+    <div id="modal-inbox" class="modal-overlay">
+      <div class="modal-card" style="max-width: 750px;">
+        <div class="modal-header">
+          <h3>📬 Internal Staff Messaging (Public Inbox)</h3>
+          <button class="btn-close-modal" data-close="modal-inbox">&times;</button>
+        </div>
+        <div class="modal-body">
+          <!-- Compose -->
+          <form id="form-send-message" style="margin-bottom: 24px; background: var(--mint-light); padding: 16px; border-radius: var(--radius-sm);">
+            <h4 style="margin-bottom: 8px;">Compose Message</h4>
+            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+              <select id="msg-recipient-select" class="form-control" style="flex: 1;" required>
+                <option value="Public">Public (All Staff)</option>
+              </select>
+            </div>
+            <textarea id="msg-text-input" class="form-control" rows="2" placeholder="Write message..." required></textarea>
+            <button type="submit" class="btn btn-primary btn-sm" style="margin-top: 8px;">Send Message</button>
+          </form>
+
+          <!-- Inbox Message List -->
+          <h4 style="margin-bottom: 10px;">Received Messages</h4>
+          <div class="table-responsive">
+            <table class="data-table" id="inbox-messages-table">
+              <thead>
+                <tr>
+                  <th>From</th>
+                  <th>To</th>
+                  <th>Message</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- =======================================================================
+       Modal Dialogs
+       ======================================================================= -->
+
+  <!-- Modal: Add/Edit Company -->
+  <div id="modal-company" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-company-title">Add Company</h3>
+        <button class="btn-close-modal" data-close="modal-company">&times;</button>
+      </div>
+      <form id="form-company">
+        <div class="modal-body">
+          <input type="hidden" id="company-original-name">
+          <div class="form-group">
+            <label>Company Name</label>
+            <input type="text" id="company-name-input" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>Office Address</label>
+            <input type="text" id="company-address-input" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="text" id="company-phone-input" class="form-control" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close="modal-company">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Company</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Add/Edit Drug -->
+  <div id="modal-drug" class="modal-overlay">
+    <div class="modal-card" style="max-width: 680px;">
+      <div class="modal-header">
+        <h3 id="modal-drug-title">Add New Medicine</h3>
+        <button class="btn-close-modal" data-close="modal-drug">&times;</button>
+      </div>
+      <form id="form-drug">
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Barcode</label>
+              <input type="text" id="drug-barcode-input" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Drug Name</label>
+              <input type="text" id="drug-name-input" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Type</label>
+              <select id="drug-type-input" class="form-control" required>
+                <option value="Bills">Bills / Tablets</option>
+                <option value="Capsule">Capsule</option>
+                <option value="Syrup">Syrup</option>
+                <option value="Injection">Injection</option>
+                <option value="Drops">Drops</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Dose (e.g. 500mg)</label>
+              <input type="text" id="drug-dose-input" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Batch Code</label>
+              <input type="text" id="drug-code-input" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Supplier Company</label>
+              <select id="drug-company-input" class="form-control" required></select>
+            </div>
+            <div class="form-group">
+              <label>Cost Price ($)</label>
+              <input type="number" step="0.01" id="drug-cost-input" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Selling Price ($)</label>
+              <input type="number" step="0.01" id="drug-selling-input" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Production Date</label>
+              <input type="date" id="drug-prod-date-input" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Expiration Date</label>
+              <input type="date" id="drug-exp-date-input" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Shelf Place (e.g. N-Right)</label>
+              <input type="text" id="drug-place-input" class="form-control" value="N-Right" required>
+            </div>
+            <div class="form-group">
+              <label>Initial Stock Qty</label>
+              <input type="number" id="drug-qty-input" class="form-control" value="10" min="0" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close="modal-drug">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Drug</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Add/Edit Purchase Deal -->
+  <div id="modal-purchase" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-purchase-title">Record Purchase Deal</h3>
+        <button class="btn-close-modal" data-close="modal-purchase">&times;</button>
+      </div>
+      <form id="form-purchase">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Deal Barcode</label>
+            <input type="text" id="purchase-barcode-input" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>Drug Name</label>
+            <input type="text" id="purchase-name-input" class="form-control" required>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Type</label>
+              <select id="purchase-type-input" class="form-control" required>
+                <option value="Bills">Bills / Tablets</option>
+                <option value="Capsule">Capsule</option>
+                <option value="Syrup">Syrup</option>
+                <option value="Injection">Injection</option>
+                <option value="Drops">Drops</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Supplier Company</label>
+              <select id="purchase-company-input" class="form-control" required></select>
+            </div>
+            <div class="form-group">
+              <label>Quantity</label>
+              <input type="number" id="purchase-qty-input" class="form-control" value="50" min="1" required>
+            </div>
+            <div class="form-group">
+              <label>Unit Price ($)</label>
+              <input type="number" step="0.01" id="purchase-price-input" class="form-control" value="1.00" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close="modal-purchase">Cancel</button>
+          <button type="submit" class="btn btn-primary">Record Deal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Add/Edit User -->
+  <div id="modal-user" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-user-title">Add Pharmacy Employee</h3>
+        <button class="btn-close-modal" data-close="modal-user">&times;</button>
+      </div>
+      <form id="form-user">
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>User ID</label>
+              <input type="number" id="user-id-input" class="form-control" placeholder="Auto-generated if empty">
+            </div>
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" id="user-name-input" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Date of Birth (DD-MM-YYYY)</label>
+              <input type="text" id="user-dob-input" class="form-control" value="01-01-1995" required>
+            </div>
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="text" id="user-phone-input" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Salary ($)</label>
+              <input type="number" step="0.01" id="user-salary-input" class="form-control" value="30000" required>
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" id="user-pass-input" class="form-control" placeholder="Min 6 characters" minlength="6" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Home Address</label>
+            <input type="text" id="user-address-input" class="form-control" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close="modal-user">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save User</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Printable Receipt / Checkout Summary -->
+  <div id="modal-receipt" class="modal-overlay">
+    <div class="modal-card" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3>🧾 Pharmacy Sales Invoice</h3>
+        <button class="btn-close-modal" data-close="modal-receipt">&times;</button>
+      </div>
+      <div class="modal-body" id="printable-receipt-area">
+        <!-- Rendered via JS -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-close="modal-receipt">Close</button>
+        <button type="button" class="btn btn-primary" onclick="window.print()">🖨️ Print Receipt</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Reusable Confirmation Dialog -->
+  <div id="modal-confirm" class="modal-overlay">
+    <div class="modal-card" style="max-width: 420px; text-align: center;">
+      <div class="modal-body" style="padding-top: 30px;">
+        <div style="font-size: 3rem; margin-bottom: 12px;">⚠️</div>
+        <h3 id="confirm-title" style="margin-bottom: 10px;">Are you sure?</h3>
+        <p id="confirm-message" style="color: var(--text-secondary); margin-bottom: 24px;">Do you really want to delete this record? This action cannot be undone.</p>
+        <div style="display: flex; gap: 12px; justify-content: center;">
+          <button type="button" class="btn btn-secondary" id="btn-confirm-cancel">Cancel</button>
+          <button type="button" class="btn btn-danger" id="btn-confirm-yes">Yes, Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: About Pharmacy -->
+  <div id="modal-about-pharmacy" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>🏥 About Pharmacy</h3>
+        <button class="btn-close-modal" data-close="modal-about-pharmacy">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h4 style="color: var(--primary-teal); margin-bottom: 8px;">Pharmacy Management System</h4>
+        <p style="margin-bottom: 14px;">The primary aim of this Pharmacy Management System is to enhance safety, improve dispensing accuracy, and maintain a centralized inventory database for medicines, purchases, staff, and transactions.</p>
+        <p style="margin-bottom: 14px;">Connected directly to MySQL Server for instantaneous multi-workstation data visibility in MySQL Workbench.</p>
+        <div style="background: var(--mint-light); padding: 14px; border-radius: var(--radius-sm);">
+          <p><strong>📍 Location:</strong> Alexandria / Elraml Station / st-Elshazly</p>
+          <p><strong>📞 Emergency Phones:</strong> 01128284736 / 01014033489</p>
+          <p><strong>☎️ Landline:</strong> 045/3397825</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-close="modal-about-pharmacy">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: About Developer -->
+  <div id="modal-about-dev" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>👨‍💻 About Developer</h3>
+        <button class="btn-close-modal" data-close="modal-about-dev">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h4 style="color: var(--primary-teal); margin-bottom: 8px;">Syed Ibrahim & Pharmacy Management Project</h4>
+        <p style="margin-bottom: 14px;">This system was originally developed in Java Swing and NetBeans, and has been completely converted into a modern, responsive full-stack Web Application powered by Node.js, Express, and MySQL2.</p>
+        <p><strong>Technology Stack:</strong> Node.js, Express, MySQL2, Vanilla CSS3, Modern JavaScript (ES6+).</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-close="modal-about-dev">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =======================================================================
+       Login Screen Overlay
+       ======================================================================= -->
+  <div id="login-overlay" class="login-screen-overlay" style="display: none;">
+    <div class="login-card">
+      <div class="login-icon-box">
+        <img src="assets/login.png" alt="Login Icon" onerror="this.src='assets/Untitled.png'">
+      </div>
+      <h2>Pharmacy Login</h2>
+      <p>Sign in with your User ID & Password</p>
+
+      <form id="form-login">
+        <div class="form-group" style="text-align: left;">
+          <label>User ID or Username</label>
+          <input type="text" id="login-id-input" class="form-control" placeholder="e.g. 1 or admin" required>
+        </div>
+        <div class="form-group" style="text-align: left;">
+          <label>Password</label>
+          <input type="password" id="login-pass-input" class="form-control" placeholder="Enter password" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; margin-top: 8px;">
+          Log In ➔
+        </button>
+      </form>
+
+      <div class="login-note">
+        <strong>Default Admin Credentials:</strong><br>
+        User ID: <code>1</code> &bull; Password: <code>admin</code>
+      </div>
+    </div>
+  </div>
+
+  <!-- =======================================================================
+       Footer
+       ======================================================================= -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <h4>📞 Contact Us</h4>
+        <ul class="footer-contact-list">
+          <li><span>📱</span> <strong>01128284736 / 01014033489</strong></li>
+          <li><span>☎️</span> <strong>045/3397825</strong></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>📍 Location</h4>
+        <ul class="footer-contact-list">
+          <li><span>🏢</span> Alexandria / Elraml Station / st-Elshazly</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>🗄️ MySQL Connection</h4>
+        <ul class="footer-contact-list">
+          <li><span>⚡</span> Host: 127.0.0.1:3306</li>
+          <li><span>📦</span> Schema: <code>pharmacy_db</code> (Connection: DBMS)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 Pharmacy Management System. All rights reserved. Converted from Java Swing to Modern Web.
+    </div>
+  </footer>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
